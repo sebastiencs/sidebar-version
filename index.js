@@ -1,7 +1,7 @@
 const http = require('http')
 const url = require('url')
 const querystring = require('querystring')
-const semver = require('./semver-extra')
+const semver = require('semver-extra')
 const fs = require('fs');
 const log = require('gelf-pro');
 
