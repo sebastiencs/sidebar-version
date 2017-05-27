@@ -1,10 +1,18 @@
 const http = require('http')
 const url = require('url')
 const querystring = require('querystring')
-const semver = require('semver-extra')
+const semver = require('./semver-extra')
 const fs = require('fs');
+const log = require('gelf-pro');
+
+log.setConfig({host: 'intern.chapu.is'});
 
 const sendVersion = (req, res) => {
+
+  log.info('sidebar-version request', {
+    ip: req.headers['x-real-ip']
+  });
+
   fs.readFile('last_version', 'utf8', (err, data) => {
     if (err) {
       console.log(err);
