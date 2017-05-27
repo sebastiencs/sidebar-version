@@ -2,3 +2,4 @@ apps:
   - script   : index.js
     instances: 1
     max_memory_restart: 200M
+    merge_logs: true
