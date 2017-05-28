@@ -57,7 +57,8 @@ const server = http.createServer((req, res) => {
   if (page == '/last' && req.method === "GET") {
     sendVersion(req, res)
   }
-  else if (page == "/update/last"  && req.method === "POST") {
+  else if (page == "/update/last"  && req.method === "POST"
+	   && req.headers["x-real-ip"] === "172.17.0.2") {
     let body = "";
     req.on("data", (data) => {
       body +=data;
