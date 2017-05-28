@@ -74,4 +74,4 @@ const server = http.createServer((req, res) => {
 
 }).on("listening", () => {
   console.log("sidebar-version listening on port " + server.address().port);
-}).listen(process.env.PORT || 3000)
+}).listen(process.env.PORT || 5353)
