@@ -5,7 +5,7 @@ const semver = require('semver-extra')
 const fs = require('fs');
 const log = require('gelf-pro');
 
-log.setConfig({host: '172.17.0.1'});
+//log.setConfig({host: '172.17.0.1'});
 
 const sendVersion = (req, res) => {
 
