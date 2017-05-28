@@ -9,8 +9,11 @@ const log = require('gelf-pro');
 
 const sendVersion = (req, res) => {
 
+  const params = querystring.parse(url.parse(req.url).query);
+
   log.info('sidebar-version request', {
-    ip: req.headers['x-real-ip']
+    ip: req.headers['x-real-ip'],
+    version: params.version
   });
 
   fs.readFile('last_version', 'utf8', (err, data) => {
@@ -19,8 +22,10 @@ const sendVersion = (req, res) => {
       res.writeHead(500)
     }
     else {
+      const client = params.version
+      const last = data
       res.writeHead(200, {"Content-Type": "text/plain"})
-      res.write(data)
+      res.write(semver.max([client, last]) === client ? "1" : "0")
     }
     res.end()
   });
@@ -54,24 +59,8 @@ const server = http.createServer((req, res) => {
 
   const page = url.parse(req.url).pathname
 
-  if (page == '/last' && req.method === "GET") {
+  if (page == "/islast" && req.method === "GET") {
     sendVersion(req, res)
-  }
-  else if (page == "/islast" && req.method === "GET") {
-    const params = querystring.parse(url.parse(req.url).query);
-    fs.readFile('last_version', 'utf8', (err, data) => {
-      if (err) {
-	console.log(err);
-	res.writeHead(500)
-      }
-      else {
-	const client = params.version
-	const last = data
-	res.writeHead(200, {"Content-Type": "text/plain"})
-	res.write(semver.max([client, last]) === client ? "1" : "0")
-      }
-      res.end()
-    });
   }
   else if (page == "/update/last"  && req.method === "POST"
 	   && req.headers["x-real-ip"] === "172.17.0.2") {
